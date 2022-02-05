@@ -1,15 +1,49 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <header><h2>To-Do List</h2></header>
+  <h4>New To-Do</h4>
+  <textarea :value=item @input="onInput"></textarea>
+  <br >
+  <button :disabled='isDisabled' @click="addItem">Add Item</button>
+  <br >
+  <List :list=list />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import List from './components/List.vue';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    List: List
+  },
+  data() {
+    return {
+      item: '',
+      list: [{
+        item: '',
+        key: '',
+      }],
+
+    }
+  },
+  methods: {
+    addItem() {
+      this.list.push({
+        item: this.item,
+        key: this.randomNumber()
+      });
+      this.item='';
+    },
+    randomNumber() {
+      return Math.floor(Math.random() * (10 - 1 + 1)) + 1
+    },
+    onInput(event) {
+      this.item = event.target.value
+    }
+  },
+  computed: {
+    isDisabled() {
+      return this.item.length === 0
+    }
   }
 }
 </script>
